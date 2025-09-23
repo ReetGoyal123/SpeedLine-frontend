@@ -1,5 +1,6 @@
 import './globals.css'
 import type { Metadata, Viewport } from 'next'
+import ChatbotWidget from '../src/components/ChatbotWidget'
 
 export const metadata: Metadata = {
   title: 'SpeedLine - Train Traffic Management System',
@@ -25,6 +26,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 font-sans antialiased">
         {children}
+        <ChatbotWidget />
       </body>
     </html>
   )

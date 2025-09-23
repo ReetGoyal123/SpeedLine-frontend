@@ -4,6 +4,8 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import useOptimizationEngine from '@/hooks/useOptimizationEngine';
+import { Play, Square, RotateCcw, AlertTriangle, Bot, Clock, Train, 
+         CheckCircle, XCircle, Zap, Activity, Settings } from 'lucide-react';
 
 interface RealTimeOptimizationProps {
   apiBaseUrl?: string;
@@ -88,8 +90,19 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
                 size="sm"
                 onClick={isPolling ? stopPolling : startPolling}
                 disabled={isOptimizing}
+                className="flex items-center gap-2"
               >
-                {isPolling ? '⏹️ Stop' : '▶️ Start'}
+                {isPolling ? (
+                  <>
+                    <Square className="w-4 h-4" />
+                    Stop
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-4 h-4" />
+                    Start
+                  </>
+                )}
               </Button>
 
               <Button 
@@ -97,8 +110,10 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
                 size="sm"
                 onClick={refreshOptimization}
                 disabled={isOptimizing}
+                className="flex items-center gap-2"
               >
-                {isOptimizing ? '🔄 Optimizing...' : '🔄 Refresh'}
+                <RotateCcw className={`w-4 h-4 ${isOptimizing ? 'animate-spin' : ''}`} />
+                {isOptimizing ? 'Optimizing...' : 'Refresh'}
               </Button>
             </div>
           </div>
@@ -130,7 +145,7 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
           {error && (
             <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <div className="flex items-center">
-                <span className="text-red-600 mr-2">❌</span>
+                <XCircle className="w-5 h-5 text-red-600 mr-2" />
                 <span className="text-red-800 text-sm">{error}</span>
               </div>
             </div>
@@ -163,7 +178,10 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
       {conflicts.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">🚨 Active Conflicts ({conflicts.length})</CardTitle>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5 text-red-600" />
+              Active Conflicts ({conflicts.length})
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
@@ -198,8 +216,9 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
       {optimizationResults && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">
-              🤖 AI Optimization Results
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Bot className="w-5 h-5 text-purple-600" />
+              AI Optimization Results
             </CardTitle>
             <div className="text-sm text-gray-600">
               Generated at: {formatTimestamp(optimizationResults.now_epoch_s)} | 
@@ -210,7 +229,9 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
           <CardContent>
             {scheduleEntries.length === 0 ? (
               <div className="text-center py-8">
-                <div className="text-4xl mb-2">🤖</div>
+                <div className="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Bot className="w-8 h-8 text-purple-400" />
+                </div>
                 <p className="text-gray-500">No optimization schedule generated</p>
               </div>
             ) : (
@@ -251,8 +272,9 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
 
                     {schedule.action.includes('hold_until') && (
                       <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
-                        <span className="text-yellow-800 text-sm">
-                          ⏰ Hold until: {schedule.action.split('hold_until_')[1]}
+                        <span className="text-yellow-800 text-sm flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          Hold until: {schedule.action.split('hold_until_')[1]}
                         </span>
                       </div>
                     )}
@@ -267,12 +289,17 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
       {/* Current Train Status */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">🚂 Current Train Status ({activeTrains.length})</CardTitle>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Train className="w-5 h-5 text-blue-600" />
+            Current Train Status ({activeTrains.length})
+          </CardTitle>
         </CardHeader>
         <CardContent>
           {activeTrains.length === 0 ? (
             <div className="text-center py-8">
-              <div className="text-4xl mb-2">🚂</div>
+              <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                <Train className="w-8 h-8 text-gray-400" />
+              </div>
               <p className="text-gray-500">No active trains</p>
             </div>
           ) : (

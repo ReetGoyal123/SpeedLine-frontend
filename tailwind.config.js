@@ -73,11 +73,36 @@ module.exports = {
           "0%, 100%": { opacity: 1 },
           "50%": { opacity: 0.5 },
         },
+        moveRail: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(240px)" },
+        },
+        floatSmoke: {
+          "0%, 100%": { 
+            transform: "translateY(0) scale(1)", 
+            opacity: "0.7" 
+          },
+          "50%": { 
+            transform: "translateY(-10px) scale(1.2)", 
+            opacity: "0.3" 
+          },
+        },
+        trainPulse: {
+          "0%, 100%": { 
+            boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" 
+          },
+          "50%": { 
+            boxShadow: "0 0 40px rgba(59, 130, 246, 0.6)" 
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        moveRail: "moveRail 4s ease-in-out infinite",
+        floatSmoke: "floatSmoke 1.5s ease-in-out infinite",
+        trainPulse: "trainPulse 3s ease-in-out infinite",
       },
     },
   },
