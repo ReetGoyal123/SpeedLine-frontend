@@ -52,8 +52,8 @@ const TrainVisualization: React.FC<TrainVisualizationProps> = ({
     return (
       <div
         key={train.train.train_id}
-        className={`absolute flex items-center space-x-2 transform -translate-y-1/2 bg-white border-2 px-3 py-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ${getTrainTypeColor(train.train.type)} border-current`}
-        style={{ left: `${position}%` }}
+        className={`absolute flex items-center space-x-2 transform -translate-y-1/2 bg-white border-2 px-4 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ${getTrainTypeColor(train.train.type)} border-current z-10`}
+        style={{ left: `${position}%`, marginTop: '2px' }}
         title={`${train.train.train_id} - ${train.train.type} - ${train.train.status} - Priority: ${train.train.priority}`}
       >
         <div className="flex items-center space-x-2">
@@ -68,13 +68,13 @@ const TrainVisualization: React.FC<TrainVisualizationProps> = ({
   };
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-8">
+      <div className="flex items-center justify-between mb-8">
         <h2 className="text-xl font-semibold text-gray-900">Live Train Positions</h2>
         <div className="text-sm text-gray-500">Real-time tracking</div>
       </div>
       
-      <div className="space-y-10">
+      <div className="space-y-12">
         {sections.map((section) => {
           const trains = getTrainsInSection(section.id);
           const sectionData = trainData.find(bundle => 
@@ -87,9 +87,9 @@ const TrainVisualization: React.FC<TrainVisualizationProps> = ({
             : 0;
 
           return (
-            <div key={section.id} className="relative">
+            <div key={section.id} className="relative mb-8">
               {/* Section Header */}
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
                   <h3 className="font-semibold text-gray-900 text-lg">
                     {section.id}
@@ -114,7 +114,7 @@ const TrainVisualization: React.FC<TrainVisualizationProps> = ({
               </div>
 
               {/* Track Visual */}
-              <div className="relative">
+              <div className="relative pt-10 pb-12">
                 {/* Track Line */}
                 <div className={`relative h-12 bg-gray-100 rounded-xl border-2 ${
                   section.trackType === 'double' 
@@ -133,10 +133,10 @@ const TrainVisualization: React.FC<TrainVisualizationProps> = ({
                   <div className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow-md" />
                   
                   {/* Station Labels */}
-                  <div className="absolute left-0 -top-8 text-sm font-semibold text-gray-700 bg-white px-2 py-1 rounded-lg shadow-sm">
+                  <div className="absolute left-0 -top-10 text-sm font-semibold text-gray-700 bg-white px-3 py-1 rounded-lg shadow-sm border">
                     {section.start}
                   </div>
-                  <div className="absolute right-0 -top-8 text-sm font-semibold text-gray-700 bg-white px-2 py-1 rounded-lg shadow-sm">
+                  <div className="absolute right-0 -top-10 text-sm font-semibold text-gray-700 bg-white px-3 py-1 rounded-lg shadow-sm border">
                     {section.end}
                   </div>
 
@@ -146,7 +146,7 @@ const TrainVisualization: React.FC<TrainVisualizationProps> = ({
                   </div>
 
                   {/* Speed Limit */}
-                  <div className="absolute right-4 -bottom-8 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">
+                  <div className="absolute right-4 -bottom-10 text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg border">
                     Max: {sectionData?.max_speed_kmh || 100} km/h
                   </div>
                 </div>
