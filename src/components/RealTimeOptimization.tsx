@@ -14,7 +14,7 @@ interface RealTimeOptimizationProps {
 }
 
 const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
-  apiBaseUrl = 'http://localhost:8000',
+  apiBaseUrl = 'https://sih-backend-1-x9tg.onrender.com',
   pollingInterval = 20000, // 20 seconds like Python decision_taker.py
   autoStart = true
 }) => {
@@ -29,6 +29,7 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
     startPolling,
     stopPolling,
     refreshOptimization,
+    fetchOptimizationResults,
     getActionIcon,
     getActionColor,
     getPriorityColor
@@ -59,7 +60,24 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
     !['Arrived', 'Cancelled'].includes(train.train.status)
   );
 
+  // State for fetched optimization results
+  const [fetchedResults, setFetchedResults] = React.useState<any>(null);
+  const [isFetching, setIsFetching] = React.useState(false);
+
   const scheduleEntries = Object.entries(optimizationResults?.schedule || {});
+
+  // Function to fetch optimization results from backend
+  const handleFetchResults = async () => {
+    setIsFetching(true);
+    try {
+      const results = await fetchOptimizationResults();
+      setFetchedResults(results);
+    } catch (error) {
+      console.error('Failed to fetch results:', error);
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -114,6 +132,17 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
               >
                 <RotateCcw className={`w-4 h-4 ${isOptimizing ? 'animate-spin' : ''}`} />
                 {isOptimizing ? 'Optimizing...' : 'Refresh'}
+              </Button>
+
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleFetchResults}
+                disabled={isFetching}
+                className="flex items-center gap-2"
+              >
+                <Activity className={`w-4 h-4 ${isFetching ? 'animate-spin' : ''}`} />
+                {isFetching ? 'Fetching...' : 'Load Saved Results'}
               </Button>
             </div>
           </div>
@@ -266,6 +295,80 @@ const RealTimeOptimization: React.FC<RealTimeOptimizationProps> = ({
                       </div>
                       <div>
                         <span className="text-gray-600">Offset:</span>
+                        <div className="font-medium">{schedule.entry_offset_s}s</div>
+                      </div>
+                    </div>
+
+                    {schedule.action.includes('hold_until') && (
+                      <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
+                        <span className="text-yellow-800 text-sm flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          Hold until: {schedule.action.split('hold_until_')[1]}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Fetched Optimization Results */}
+      {fetchedResults && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+              Saved Optimization Results
+            </CardTitle>
+            <div className="text-sm text-gray-600">
+              Retrieved from backend at: {formatTimestamp(fetchedResults.now_epoch_s)} | 
+              Horizon: {fetchedResults.horizon_s}s | 
+              Trains considered: {fetchedResults.snapshot_trains_considered}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {Object.keys(fetchedResults.schedule || {}).length === 0 ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+                  <CheckCircle className="w-8 h-8 text-green-400" />
+                </div>
+                <p className="text-gray-500">No saved optimization schedule</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {Object.entries(fetchedResults.schedule || {}).map(([trainId, schedule]: [string, any]) => (
+                  <div key={trainId} className="border rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-3">
+                        <span className="text-xl">{getActionIcon(schedule.action)}</span>
+                        <div>
+                          <h4 className="font-medium">{trainId}</h4>
+                          <p className="text-sm text-gray-600">
+                            Priority: {schedule.priority} | Status: {schedule.status}
+                          </p>
+                        </div>
+                      </div>
+                      <div className={`px-3 py-1 rounded-lg border text-sm font-medium ${getActionColor(schedule.action)}`}>
+                        {schedule.action.replace('_', ' ').toUpperCase()}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <span className="text-gray-600">Target Section:</span>
+                        <div className="font-medium">{schedule.target_section}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-600">Entry Time:</span>
+                        <div className="font-medium">
+                          {formatTimestamp(schedule.entry_epoch_s)}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-sm text-gray-600">Offset:</span>
                         <div className="font-medium">{schedule.entry_offset_s}s</div>
                       </div>
                     </div>

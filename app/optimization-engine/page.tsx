@@ -101,7 +101,7 @@ export default function OptimizationEnginePage() {
           transition={{ duration: 0.6, delay: 0.3 }}
         >
           <RealTimeOptimization 
-            apiBaseUrl="http://localhost:8000"
+            apiBaseUrl="https://sih-backend-1-x9tg.onrender.com"
             pollingInterval={20000} // 20 seconds like Python decision_taker.py
             autoStart={true}
           />

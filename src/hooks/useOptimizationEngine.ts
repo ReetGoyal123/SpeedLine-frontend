@@ -68,7 +68,7 @@ interface OptimizationEngineState {
 }
 
 const useOptimizationEngine = (
-  apiBaseUrl: string = 'http://localhost:8000',
+  apiBaseUrl: string = 'https://sih-backend-1-x9tg.onrender.com',
   pollingInterval: number = 20000, // 20 seconds like Python decision_taker.py
   groqApiKey?: string,
   autoStart: boolean = false
@@ -513,6 +513,26 @@ Focus on the most critical trains first. Provide only the JSON response without 
     }
   }, [apiBaseUrl]);
 
+  // Fetch optimization results from backend (GET request)
+  const fetchOptimizationResults = useCallback(async (): Promise<OptimizationSchedule | null> => {
+    try {
+      const response = await axios.get(`${apiBaseUrl}/api/optimization/results`, {
+        timeout: 10000,
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.data && response.data.data) {
+        console.log('Fetched optimization results from API');
+        return response.data.data;
+      }
+      return null;
+    } catch (error) {
+      console.error('Failed to fetch optimization results:', error);
+      setState(prev => ({ ...prev, error: 'Failed to fetch optimization results' }));
+      return null;
+    }
+  }, [apiBaseUrl]);
+
   // Get optimized schedule (main optimization logic from Python decision_taker.py)
   const getOptimizedSchedule = useCallback(async (trains: TrainData[]): Promise<OptimizationSchedule> => {
     const conflicts = analyzeConflicts(trains);
@@ -734,6 +754,7 @@ Focus on the most critical trains first. Provide only the JSON response without 
     refreshOptimization,
     toggleGroqAI,
     getSavedSchedules,
+    fetchOptimizationResults,
     // Helper functions for components
     getActionIcon: (action: string) => {
       if (action === 'proceed') return '✅';

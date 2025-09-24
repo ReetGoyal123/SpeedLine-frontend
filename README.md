@@ -49,7 +49,7 @@ A comprehensive Next.js dashboard for monitoring railway operations, featuring l
 
 ### Prerequisites
 - Node.js 16+ and npm
-- Backend running on `http://localhost:8000` (optional - has mock data fallback)
+- Backend running on `https://sih-backend-1-x9tg.onrender.com` (optional - has mock data fallback)
 
 ### Installation
 
@@ -269,7 +269,7 @@ npm start       # Start production server
 
 ### Environment Variables
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8000  # Backend API URL
+NEXT_PUBLIC_API_URL=https://sih-backend-1-x9tg.onrender.com  # Backend API URL
 ```
 
 ## 🔮 Future Enhancements

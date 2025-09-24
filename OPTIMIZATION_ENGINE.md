@@ -71,7 +71,7 @@ const sectionGraph = {
 
 ### Polling Configuration
 - **Interval**: 15 seconds (same as Python `polling_interval=15`)
-- **API Base URL**: `http://localhost:8000`
+- **API Base URL**: `https://sih-backend-1-x9tg.onrender.com`
 - **Auto-start**: Enabled by default
 
 ## API Endpoints Required
