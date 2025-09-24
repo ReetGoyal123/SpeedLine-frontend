@@ -1,6 +1,3 @@
-Here’s a cleaned-up, professional version of your README with emojis removed and your deployed link included:
-
----
 
 # SpeedLine Train Traffic Management System
 
@@ -254,6 +251,5 @@ This project was created for **SIH 2025 – Smart India Hackathon** by Team **Sw
 * Improved operational efficiency through data insights
 * Scalable architecture using modern web technologies
 
----
 
-Would you like me to also **shorten this README into a more concise version** (for GitHub front-page clarity), and move the technical deep-dive (like API details and data models) into a separate `docs/` folder?
+
