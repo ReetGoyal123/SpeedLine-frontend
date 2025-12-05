@@ -1,0 +1,72 @@
+# Environment files
+backend/env
+backend/__pycache__/env
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Python
+backend/venv/
+backend/__pycache__/
+__pycache__/
+*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Next.js
+frontend/train-dashboard/.next/
+frontend/train-dashboard/out/
+frontend/train-dashboard/build/
+frontend/train-dashboard/.vercel
+
+# Node dependencies
+frontend/train-dashboard/node_modules/
+node_modules/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+*.tmp
